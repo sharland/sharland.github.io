@@ -202,7 +202,7 @@ a:active {
 
   .bg-primary {
     background-color:#2C3E50 !important; 
-     
+
     /*background-color: #2196f3 !important;
 
     background-image: url(../img/profile-banner.jpg); 
@@ -225,10 +225,10 @@ a:active {
       background-repeat: no-repeat;
   }
 
-  #about h1 {
-    /*font-size: 100%;*/
+  /*#about h1 {
+    font-size: 100%;
   }
-
+*/
 /*==================================================
                     EXPERIENCE
 ====================================================*/  
