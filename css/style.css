@@ -81,6 +81,7 @@ a:active {
   #sideNav .navbar-nav .nav-item .nav-link {
       font-weight: 600;
       text-transform: uppercase;
+
   }
 
   @media (min-width: 992px) {
@@ -200,7 +201,13 @@ a:active {
   }
 
   .bg-primary {
-      background-color: #2196f3 !important;
+    background-color:#ff0000 !important;  
+    /*background-color: #2196f3 !important;
+
+      background-image: url(../img/profile-banner.jpg); 
+      background-size: cover;
+      background-position: left left;
+      background-repeat: no-repeat;*/
   }
 
   .text-primary {
@@ -213,7 +220,7 @@ a:active {
   #about {
       background-image: url(../img/profile-banner.jpg); 
       background-size: cover;
-      background-position: center center;
+      background-position: left left;
       background-repeat: no-repeat;
   }
 
