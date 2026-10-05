@@ -1,0 +1,82 @@
+# Site settings. GitHub Pages builds this with Jekyll 3.x and the github-pages gem;
+# the Gemfile pins the same versions so `bundle exec jekyll serve` is a faithful preview.
+
+title: Brian Sharland
+tagline: AI governance and information security
+description: >-
+  Brian Sharland works in AI governance and information security. ISO/IEC 42001
+  Foundation; led an ISO 27001:2022 certification from nothing to its Stage 2 audit
+  in five months; twenty years teaching computing before that. Oxfordshire, UK.
+url: "https://sharland.github.io"
+baseurl: ""
+lang: en-GB
+locale: en_GB
+timezone: Europe/London
+
+author:
+  name: Brian Sharland
+  url: https://www.linkedin.com/in/briansharland
+
+# Used by jekyll-seo-tag for the Person record and by the templates for the two links.
+social:
+  name: Brian Sharland
+  links:
+    - https://www.linkedin.com/in/briansharland
+    - https://github.com/sharland
+linkedin_url: https://www.linkedin.com/in/briansharland
+github_url: https://github.com/sharland
+repository_url: https://github.com/sharland/sharland.github.io
+
+# The github-pages gem applies jekyll-theme-primer unless a theme is set explicitly.
+# This site has its own layout and stylesheet, so no theme.
+theme: null
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  auto_ids: true
+
+collections:
+  notes:
+    output: true
+    permalink: /notes/:slug/
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      image:
+        path: /assets/img/og.jpg
+        width: 1200
+        height: 630
+  - scope:
+      path: ""
+      type: notes
+    values:
+      layout: note
+      compact: true
+      excerpt_separator: ""   # notes use `description`; no auto-excerpts
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Notes are the only thing worth syndicating; serve them at /feed.xml.
+# jekyll-feed always writes a posts feed too, so move that out of the way.
+feed:
+  collections:
+    notes:
+      path: "/feed.xml"
+    posts:
+      path: "/feed/posts.xml"
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+  - node_modules
+  - .jekyll-cache
+  - .bundle

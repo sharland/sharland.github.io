@@ -1,0 +1,24 @@
+---
+layout: default
+title: Notes
+description: Working documents on AI governance by Brian Sharland.
+compact: true
+permalink: /notes/
+---
+{%- assign notes = site.notes | sort: "date" | reverse %}
+<h1>Notes</h1>
+<p class="doc-control">Working documents. Each one carries its status and the date it was last reviewed.</p>
+{%- if notes.size > 0 %}
+<ul class="entries">
+{%- for note in notes %}
+  <li>
+    <p class="entry-head"><a class="entry-title" href="{{ note.url | relative_url }}">{{ note.title }}</a> <span class="entry-meta">{{ note.date | date: "%B %Y" }}{% if note.status %}, {{ note.status }}{% endif %}.</span></p>
+    {%- if note.description %}
+    <p class="entry-body">{{ note.description }}</p>
+    {%- endif %}
+  </li>
+{%- endfor %}
+</ul>
+{%- else %}
+<p>Nothing published yet.</p>
+{%- endif %}
