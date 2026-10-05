@@ -1,0 +1,45 @@
+# One entry per published piece of work. Entries appear in file order within
+# their group, so keep the newest at the top.
+#   title    what the link says (for repositories, the repository name)
+#   kind     mapping | template | analysis | tool   (ids and order live in kinds.yml)
+#   year     year of first publication
+#   url      where the title links: a repository, a note on this site, a PDF
+#   meta     optional short clause after the title, written with a full stop: "Python, 2026."
+#   summary  one or two plain sentences
+
+- title: next-task
+  kind: tool
+  year: 2026
+  url: https://github.com/sharland/next-task
+  meta: Python, 2026.
+  summary: >-
+    A local, dependency-free task tracker built around a dependency graph, with
+    atomic writes and tests. It exposes a narrow MCP interface to Claude, which is
+    how I give an AI agent a bounded, inspectable surface rather than open access.
+
+- title: study-drill
+  kind: tool
+  year: 2026
+  url: https://github.com/sharland/study-drill
+  meta: HTML and JSON, 2026.
+  summary: >-
+    A static flashcard and multiple-choice drill app with plain-JSON question banks;
+    nothing leaves the browser. I built it to revise for certification exams.
+
+- title: cairoX
+  kind: tool
+  year: 2025
+  url: https://github.com/sharland/cairoX
+  meta: Python, 2025.
+  summary: >-
+    A small helper library for pycairo. The drawing at the top of this page comes
+    from the same practice.
+
+- title: vqganclip
+  kind: tool
+  year: 2021
+  url: https://github.com/sharland/vqganclip
+  meta: Jupyter notebook, 2021.
+  summary: >-
+    A text-to-image experiment with VQGAN+CLIP from before image generation was a
+    product. Useful background when assessing what these systems actually do.

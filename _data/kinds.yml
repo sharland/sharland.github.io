@@ -1,0 +1,19 @@
+# Work groups, in the order they appear on the front page.
+# A group is only rendered when _data/work.yml has at least one entry with its id.
+#   id     value used in work.yml `kind`
+#   label  heading shown on the page
+#   blurb  one sentence under the heading (optional)
+#   mono   set true when titles are repository names, so they are set in monospace
+- id: mapping
+  label: Framework mappings
+  blurb: How the requirements of one framework line up against another, with the gaps named.
+- id: template
+  label: Templates and tooling
+  blurb: Documents and small tools for running AI governance in practice.
+- id: analysis
+  label: Analyses and worked examples
+  blurb: A real or realistic case worked through against the rules that apply to it.
+- id: tool
+  label: Tools
+  mono: true
+  blurb: Small programs written for my own use, published as they are.

@@ -1,0 +1,16 @@
+---
+layout: default
+---
+<article class="note">
+  <h1 class="note-title">{{ page.title }}</h1>
+  <p class="doc-control">
+    {%- if page.status %}{{ page.status | capitalize }}{% if page.version %}, version {{ page.version }}{% endif %}. {% endif -%}
+    First published {{ page.date | date: "%-d %B %Y" }}
+    {%- if page.updated %}, last reviewed {{ page.updated | date: "%-d %B %Y" }}{% endif %}.
+  </p>
+  {% if page.description %}<p class="note-summary">{{ page.description }}</p>{% endif %}
+  <div class="note-body">
+{{ content }}
+  </div>
+  <p class="note-back"><a href="{{ '/notes/' | relative_url }}">All notes</a></p>
+</article>
