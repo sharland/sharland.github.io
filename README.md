@@ -12,15 +12,16 @@ _data/kinds.yml      the Work groups and their order
 _data/work.yml       one entry per piece of published work
 _notes/              Markdown notes; each becomes /notes/<slug>/
 _layouts/            default.html (page frame), note.html (a note)
-_includes/           head, masthead (text + drawing), footer
+_includes/           head, side (disc, name, menu), menu (section links,
+                     used by the sidebar and the sticky bar), glyph, footer
 index.html           the front page
 notes/index.html     list of notes at /notes/
 404.html             not-found page
 assets/css/site.css  all styles; colours and type live in :root
-assets/js/chords.js  the drawing at the top of the page
+assets/js/disc.js    the drawing in the sidebar
+assets/js/nav.js     marks the current section in the menu
 assets/fonts/        Literata (SIL Open Font License, see OFL.txt)
-assets/img/          og.jpg (link preview), chords-fallback.jpg (no-JS),
-                     chords-source.jpg (the original drawing), favicons
+assets/img/          og.jpg (link preview), disc-fallback.webp (no-JS), favicons
 ```
 
 ## Adding a piece of work
@@ -107,17 +108,31 @@ different branch, this layout will not deploy until it is set back to
 
 ## Design notes
 
-- Colours are sampled from the two images that were already Brian's own. The
-  paper is the ground of the chord drawing; the two accents, petrol blue for
-  light mode and sea-green for dark mode, are from the old posterised portrait.
-  They are set once in `:root` in `assets/css/site.css`.
-- The typeface is Literata, a variable font with optical sizes, self-hosted
-  from `assets/fonts/`. Monospace is the system stack and is only used for
-  repository names.
-- The drawing is redrawn on a canvas each visit, seeded by the date, so it
-  changes once a day and fits any screen. It is a few thousand straight lines
-  joining random points on one very large circle whose left edge sits just
-  inside the frame. With JavaScript off, a JPEG of the original shows instead.
-- The footer's claim that the page sets no cookies and loads nothing from third
-  parties is true because the fonts are self-hosted and there is no analytics.
-  Keep it true, or change the sentence.
+- **Layout.** On screens 64rem and wider the left column is pinned: the disc, the
+  name, the section menu and the two contact links stay in view while the text
+  scrolls beside them. Below that width the menu becomes a bar that sticks to the
+  top of the screen. The current section is marked by `assets/js/nav.js`; without
+  JavaScript the menu still works as ordinary anchor links.
+- **The disc.** `assets/js/disc.js` draws one of eight pieces into a canvas each
+  visit: three ribbon pieces (translucent sheets between two curves), two ring
+  pieces (drifting concentric circles that produce moiré), a radial burst, black
+  sheets, and a black mesh. Which piece is drawn is chosen by the date, or pinned
+  with `disc:` in `_config.yml`. Add `?disc=ribbons-lime` (or any other piece
+  name) to the address to preview a piece on any day. The geometry inside a piece
+  also changes daily.
+- **Colour.** Each piece carries its own plate colour and line colours, and sets the
+  page accent (links, menu highlight, heading rules) so the page always matches
+  the drawing. All of it lives in the block of `html[data-disc=...]` rules at the
+  top of `assets/css/site.css`; adding a piece is one CSS rule plus a name in the
+  list in `_includes/head.html`, and a builder in `disc.js` if it needs a new kind
+  of drawing. The light ground is cream, the dark ground is near-black, following
+  the system setting.
+- **Type.** Literata, a variable font with optical sizes, self-hosted from
+  `assets/fonts/`. Monospace is the system stack and is only used for repository
+  names.
+- **Privacy.** The footer's claim that the page sets no cookies and loads nothing
+  from third parties is true because the fonts are self-hosted and there is no
+  analytics. Keep it true, or change the sentence.
+- **Long notes.** For a table of contents inside a note, put `* TOC` on one line
+  and `{:toc}` on the next where you want it; kramdown builds the list from the
+  headings.

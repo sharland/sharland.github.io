@@ -1,8 +1,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#fbf8f4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#161311" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f4efe6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0c0f" media="(prefers-color-scheme: dark)">
+<script>
+/* Pick today's piece before first paint so the page accent never flashes.
+   _config.yml `disc:` pins a piece or says "daily"; ?disc=<name> previews one. */
+(function(){var p="{{ site.disc | default: 'daily' }}",L=["ribbons-lime","ribbons-magenta","ribbons-cyan","rings-orange","rings-gradient","burst-red","sheets-black","mesh-black"];
+try{var q=new URLSearchParams(location.search).get("disc");if(q&&L.indexOf(q)>-1){p=q;}}catch(e){}
+if(L.indexOf(p)<0){var d=new Date(),s=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();p=L[s%L.length];}
+document.documentElement.setAttribute("data-disc",p);})();
+</script>
 {% seo %}
 <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
 <link rel="icon" href="{{ '/assets/img/favicon-32.png' | relative_url }}" sizes="32x32" type="image/png">

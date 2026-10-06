@@ -1,0 +1,20 @@
+{%- comment -%}
+The section menu. Included twice: in the sidebar (desktop) and in the sticky bar
+(phone and tablet). On the front page the links are in-page anchors; elsewhere
+they go back to the front page. nav.js marks the current section with aria-current.
+{%- endcomment -%}
+{%- assign is_home = false -%}{%- if page.url == "/" -%}{%- assign is_home = true -%}{%- endif -%}
+{%- capture base -%}{%- unless is_home -%}{{ "/" | relative_url }}{%- endunless -%}{%- endcapture -%}
+{%- assign in_notes = false -%}{%- if page.url contains "/notes/" -%}{%- assign in_notes = true -%}{%- endif -%}
+<ul class="menu">
+  <li><a href="{{ base }}#about" data-section="about">About</a></li>
+  <li><a href="{{ base }}#work" data-section="work">Work</a></li>
+  {%- if site.notes.size > 0 %}
+  {%- if is_home %}
+  <li><a href="#notes" data-section="notes">Notes</a></li>
+  {%- else %}
+  <li><a href="{{ '/notes/' | relative_url }}"{% if in_notes %} aria-current="true"{% endif %}>Notes</a></li>
+  {%- endif %}
+  {%- endif %}
+  <li><a href="{{ base }}#background" data-section="background">Background</a></li>
+</ul>
