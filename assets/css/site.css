@@ -108,7 +108,7 @@ html {
 body { margin: 0; min-height: 100vh; }
 /* The page accent follows the disc and the ground follows the theme switch;
    a short crossfade keeps either change from snapping. */
-html, body, a, .bar, .footer, h2, .group-title, .textbtn, .menu a,
+html, body, a, .bar, .footer, h2, .group-title, .textbtn, .arrow, .menu a,
 h2::before, .menu a[aria-current="true"]::before, .bar .menu a, .side, .skip {
   transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
@@ -134,8 +134,8 @@ code, .is-code { font-family: var(--mono); font-size: 0.875em; }
 .skip:focus { top: 1rem; }
 
 /* ---- Sidebar pieces (shared by both layouts) ---- */
-.side-disc { position: relative; aspect-ratio: 1 / 1; }
-.side-disc canvas, .side-disc img {
+.disc-frame { position: relative; aspect-ratio: 1 / 1; }
+.disc-frame canvas, .disc-frame img {
   position: absolute; inset: 0; width: 100%; height: 100%; display: block;
   border-radius: 50%;
 }
@@ -162,12 +162,20 @@ code, .is-code { font-family: var(--mono); font-size: 0.875em; }
 }
 .textbtn:hover { text-decoration-thickness: 2px; }
 .disc-controls {
-  display: flex; align-items: baseline; gap: 0.9rem;
-  margin: 0.75rem 0 0; font-family: var(--ui); font-size: 0.9375rem; color: var(--muted);
+  display: flex; align-items: center; justify-content: center; gap: 1rem;
+  margin: 0.75rem 0 0; font-family: var(--ui); color: var(--muted);
 }
-.disc-name { font-family: var(--mono); font-size: 0.8125rem; }
-.side-disc canvas.is-button { cursor: pointer; }
-.side-disc canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.disc-name { font-family: var(--mono); font-size: 0.8125rem; min-width: 7.5em; text-align: center; }
+.arrow {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2rem; height: 2rem; padding: 0; margin: 0;
+  background: none; border: 0; border-radius: 50%;
+  color: var(--accent); cursor: pointer;
+}
+.arrow svg { width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.arrow:hover { color: var(--ink); }
+.disc-frame canvas.is-button { cursor: pointer; }
+.disc-frame canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
 .menu { font-family: var(--ui); }
 .menu li { margin: 0; }
@@ -194,8 +202,7 @@ code, .is-code { font-family: var(--mono); font-size: 0.875em; }
     padding: 2rem 2rem 1.75rem;
     border-right: 1px solid var(--rule);
   }
-  .side-disc { width: min(100%, calc(100vh - 29rem)); margin: 0; }
-  .disc-controls { margin: 0.75rem 0 1.5rem; }
+  .side-disc { width: min(100%, calc(100vh - 29rem)); margin: 0 0 1.5rem; }
   .side-id { margin-bottom: 1.5rem; }
   .side-menu { margin-bottom: auto; }
   .menu { display: flex; flex-direction: column; gap: 0.6rem; }
@@ -220,9 +227,8 @@ code, .is-code { font-family: var(--mono); font-size: 0.875em; }
   .side-links { order: 2; padding: 0.5rem var(--gutter) 1rem; }
   .bar { order: 3; }
   .side-disc { order: 4; width: min(72vw, 22rem); margin: 1.75rem auto 0; }
-  .disc-controls { order: 5; justify-content: center; padding: 0 var(--gutter); }
-  .main { order: 6; padding: 1.5rem var(--gutter) 0; }
-  .footer { order: 7; margin: 0 var(--gutter); }
+  .main { order: 5; padding: 1.5rem var(--gutter) 0; }
+  .footer { order: 6; margin: 0 var(--gutter); }
   .side-menu, .side-theme { display: none; }
 
   .bar {
