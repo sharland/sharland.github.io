@@ -7,6 +7,10 @@ title: Brian Sharland
 # rings-gradient, burst-red, sheets-black, mesh-black. Preview any piece
 # on any day with ?disc=<name> in the address bar.
 disc: daily
+# Which face sets headings and which sets text. "a": Literata headings, Public
+# Sans text. "b": Public Sans headings, Literata text. Preview either with
+# ?type=a or ?type=b in the address bar.
+type_pairing: a
 tagline: AI governance and information security
 description: >-
   Brian Sharland works in AI governance and information security. ISO/IEC 42001

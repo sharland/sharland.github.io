@@ -1,7 +1,14 @@
 <aside class="side">
   <div class="side-disc">
-    <canvas id="disc" role="img" aria-label="Generative drawing: a disc filled with dense coloured lines. A different piece is drawn each day."></canvas>
-    <noscript><img src="{{ '/assets/img/disc-fallback.webp' | relative_url }}" width="800" height="800" alt="Generative drawing: a disc of deep red radial lines on cream."></noscript>
+    <div class="disc-frame">
+      <canvas id="disc" role="img" aria-label="Generative drawing: a disc filled with dense coloured lines. A different piece is drawn each day."></canvas>
+      <noscript><img src="{{ '/assets/img/disc-fallback.webp' | relative_url }}" width="800" height="800" alt="Generative drawing: a disc of deep red radial lines on cream."></noscript>
+    </div>
+    <p class="disc-controls" hidden>
+      <button type="button" class="arrow" id="disc-prev" aria-label="Previous piece"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+      <span class="disc-name" id="disc-name" aria-live="polite"></span>
+      <button type="button" class="arrow" id="disc-next" aria-label="Next piece"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </p>
   </div>
   <div class="side-id">
     {% if page.url == "/" %}<h1 class="name"><a href="#top">Brian Sharland</a></h1>{% else %}<p class="name"><a href="{{ '/' | relative_url }}#top">Brian Sharland</a></p>{% endif %}
@@ -11,4 +18,5 @@
 {% include menu.html %}
   </nav>
   <p class="side-links">Oxfordshire. Find me on <a href="{{ site.linkedin_url }}" rel="me">LinkedIn</a> and <a href="{{ site.github_url }}" rel="me">GitHub</a>.</p>
+  <p class="side-theme"><button type="button" class="textbtn" data-theme-toggle hidden>Dark</button></p>
 </aside>
