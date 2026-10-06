@@ -93,6 +93,26 @@ def cmd_check(args) -> int:
 
 # --- new ------------------------------------------------------------------
 
+def front_matter(title, slug, date, updated, status, version, description, sources, published) -> list:
+    lines = [
+        "---",
+        f"title: {frontmatter.quote(title)}",
+        f"slug: {slug}",
+        f"date: {date.isoformat()}",
+        f"updated: {updated.isoformat()}",
+        f"status: {status}",
+        f"version: {frontmatter.quote(version)}",
+        "description: >-",
+    ]
+    lines += ["  " + part for part in textwrap.wrap(" ".join(description.split()), width=78,
+                                                   break_long_words=False, break_on_hyphens=False)]
+    if sources:
+        lines.append("sources:")
+        lines += [f"  - {url}" for url in sources]
+    lines += [f"published: {'true' if published else 'false'}", "---"]
+    return lines
+
+
 def cmd_new(args) -> int:
     root, today = args.root, args.today
     slug = args.slug or slugify(args.title)
@@ -109,24 +129,9 @@ def cmd_new(args) -> int:
             print(f"not a public URL: {url!r}", file=sys.stderr)
             return 2
     description = args.description or "[Brian: one or two sentences. Used on the notes list and as the page's meta description.]"
-    lines = [
-        "---",
-        f"title: {frontmatter.quote(args.title)}",
-        f"slug: {slug}",
-        f"date: {today.isoformat()}",
-        f"updated: {today.isoformat()}",
-        "status: working draft",
-        'version: "0.1"',
-        "description: >-",
-    ]
-    lines += ["  " + part for part in textwrap.wrap(" ".join(description.split()), width=78,
-                                                   break_long_words=False, break_on_hyphens=False)]
-    if args.source:
-        lines.append("sources:")
-        lines += [f"  - {url}" for url in args.source]
+    lines = front_matter(args.title, slug, today, today, "working draft", "0.1", description,
+                         args.source or [], False)
     lines += [
-        "published: false",
-        "---",
         "",
         "## [Brian: first heading]",
         "",
@@ -145,6 +150,57 @@ def cmd_new(args) -> int:
         print(f"Created {result['path']}")
         print(f"It will be published at {result['url']}")
         print("Preview drafts with: serve --unpublished")
+    return 0
+
+
+def cmd_save(args) -> int:
+    root, today = args.root, args.today
+    slug = args.slug.strip()
+    if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", slug) or re.match(r"^\d{1,2}-", slug):
+        print("slug may contain only lower-case letters, digits and hyphens, and must not start like a day",
+              file=sys.stderr)
+        return 2
+    if not args.title.strip() or not args.description.strip():
+        print("a note needs a title and a description", file=sys.stderr)
+        return 2
+    try:
+        body = Path(args.body_file).read_text(encoding="utf-8")
+    except OSError as error:
+        print(f"cannot read the body: {error}", file=sys.stderr)
+        return 2
+    for url in args.source or []:
+        if not re.match(r"^https?://\S+$", url):
+            print(f"not a public URL: {url!r}", file=sys.stderr)
+            return 2
+    status = args.status or "final"
+    version = args.version or "1.0"
+    if not checks.VERSION_RE.match(version):
+        print('version must look like "1.0"', file=sys.stderr)
+        return 2
+
+    existing = checks.find_note(checks.load_notes(root), slug)
+    if existing is not None and existing.published:
+        print(f"{existing.rel} is published; the page does not rewrite live notes", file=sys.stderr)
+        return 1
+    newline = repo_newline(root)
+    if existing is not None:
+        path = existing.path
+        date = checks._parse_date(str(existing.front.data.get("date", ""))) or today
+    else:
+        path = root / "_notes" / f"{today:%Y-%m}-{slug}.md"
+        date = today
+    body = body.replace("\r\n", "\n").strip("\n") + "\n"
+    lines = front_matter(args.title.strip(), slug, date, today, status, version,
+                         args.description, args.source or [], False)
+    text = newline.join(lines) + newline + newline + body.replace("\n", newline)
+    path.parent.mkdir(exist_ok=True)
+    write(path, text)
+    result = {"path": path.relative_to(root).as_posix(), "slug": slug,
+              "url": f"{site_url(root)}/notes/{slug}/", "created": existing is None}
+    if args.json:
+        print(json.dumps(result))
+    else:
+        print(f"{'Created' if existing is None else 'Updated'} {result['path']} (unpublished)")
     return 0
 
 
@@ -324,6 +380,17 @@ def build_parser() -> argparse.ArgumentParser:
                    help="a public URL the note draws on; repeatable")
     p.add_argument("--json", action="store_true", help="print path, slug and url as JSON")
     p.set_defaults(func=cmd_new)
+
+    p = sub.add_parser("save", help="write a draft note from a title, description and body file")
+    p.add_argument("--slug", required=True)
+    p.add_argument("--title", required=True)
+    p.add_argument("--description", required=True)
+    p.add_argument("--body-file", required=True, help="a file holding the Markdown body")
+    p.add_argument("--source", action="append", metavar="URL")
+    p.add_argument("--status", help="defaults to final")
+    p.add_argument("--version", help="defaults to 1.0")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(func=cmd_save)
 
     p = sub.add_parser("work", help="edit _data/work.yml")
     wsub = p.add_subparsers(dest="work_command", metavar="add", required=True)

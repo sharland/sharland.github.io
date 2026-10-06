@@ -12,9 +12,15 @@ how to work here.
 - **Notes only.** The site carries formal working documents in `_notes/`. There
   is no blog or commentary section and none should be added; short commentary
   goes to LinkedIn, which the Notes area links to.
-- **Brian writes.** Scaffold, check, verify references and edit on request. Do
-  not draft the prose of a note. `site new` leaves `[Brian: ...]` prompts for
-  that reason.
+- **Opinion writing is Brian's alone.** For an opinion note or LinkedIn
+  commentary, do not draft, rewrite, edit, tidy or suggest wording, even where
+  that leaves errors in. He works in AI compliance and wants his opinions to be
+  demonstrably his own. Help there is limited to mechanics he asks for:
+  creating the empty file, running the rule-based checks, publishing.
+- **Structured documents are different.** For crosswalks, mappings, templates
+  and policy, assist normally: verify references against their sources and
+  edit on request. If it is unclear which kind a piece is, ask. `site new`
+  leaves `[Brian: ...]` prompts and never prose.
 - **Personal only.** This is a personal project. Do not read from or write to
   employer systems or data (work Slack, Jira, Confluence, work mail or files)
   for anything here, and do not send project content to an external model API
@@ -34,6 +40,7 @@ how to work here.
 | Command | What it does |
 |---|---|
 | `site new --title "..." [--source URL]` | Start a draft in `_notes/YYYY-MM-<slug>.md` |
+| `site save --slug ... --title ... --description ... --body-file F` | Write a draft from a body file; refuses to touch a published note. Used by the daily-briefing page |
 | `site work add --title --kind --url --summary [--meta] [--year]` | Add an entry to `_data/work.yml`, first in its group |
 | `site check` | Check every note and work entry as they stand |
 | `site check <slug> [--build] [--links]` | Judge one note as if it were published |

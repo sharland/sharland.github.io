@@ -11,7 +11,10 @@ from conftest import NOTE, REPO, WORK, make_note
 
 
 def run(root, *argv):
-    return sitetool.main(["--root", str(root), "--today", "2026-10-06", *argv])
+    argv = list(argv)
+    if "--today" not in argv:
+        argv = ["--today", "2026-10-06", *argv]
+    return sitetool.main(["--root", str(root), *argv])
 
 
 def note_text(root, name="2026-10-a-good-note.md"):
@@ -179,3 +182,48 @@ def test_real_build_is_clean_and_leaks_no_tooling(today):
     notes = checks.load_notes(REPO)
     found = checks.check_build(REPO, [n.slug for n in notes if n.slug], unpublished=True)
     assert found == [], "\n".join(str(f) for f in found)
+
+
+# --- save ---
+
+def test_save_creates_then_overwrites_a_draft(root, capsys):
+    body = root / "body.md"
+    body.write_text("## Heading\n\nText.\n", encoding="utf-8")
+    assert run(root, "save", "--slug", "my-view", "--title", "My view", "--description", "One line.",
+               "--body-file", str(body), "--source", "https://example.org/a", "--json") == 0
+    out = json.loads(capsys.readouterr().out)
+    assert out == {"path": "_notes/2026-10-my-view.md", "slug": "my-view",
+                   "url": "https://sharland.github.io/notes/my-view/", "created": True}
+    text = note_text(root, "2026-10-my-view.md")
+    front = frontmatter.parse(text)
+    assert front.data["published"] == "false" and front.data["status"] == "final"
+    assert front.data["version"] == "1.0" and front.data["sources"] == ["https://example.org/a"]
+    assert front.body.strip() == "## Heading\n\nText."
+    assert run(root, "check") == 0
+    capsys.readouterr()  # discard the check report so the next --json read is clean
+
+    body.write_text("## Changed\n", encoding="utf-8")
+    assert run(root, "--today", "2026-11-01", "save", "--slug", "my-view", "--title", "My view 2",
+               "--description", "Two.", "--body-file", str(body), "--json") == 0
+    out = json.loads(capsys.readouterr().out)
+    assert out["created"] is False and out["path"] == "_notes/2026-10-my-view.md"
+    front = frontmatter.parse(note_text(root, "2026-10-my-view.md"))
+    assert front.data["date"] == "2026-10-06" and front.data["updated"] == "2026-11-01"
+    assert front.data["title"] == "My view 2" and "Changed" in front.body
+
+
+def test_save_refuses_a_published_note(root):
+    make_note(root, published="true")
+    body = root / "body.md"
+    body.write_text("## X\n", encoding="utf-8")
+    assert run(root, "save", "--slug", "a-good-note", "--title", "T", "--description", "D",
+               "--body-file", str(body)) == 1
+    assert note_text(root) == NOTE.replace("published: false", "published: true")
+
+
+def test_save_rejects_bad_input(root):
+    body = root / "body.md"
+    body.write_text("x", encoding="utf-8")
+    assert run(root, "save", "--slug", "Bad Slug", "--title", "T", "--description", "D", "--body-file", str(body)) == 2
+    assert run(root, "save", "--slug", "ok", "--title", "T", "--description", "", "--body-file", str(body)) == 2
+    assert run(root, "save", "--slug", "ok", "--title", "T", "--description", "D", "--body-file", str(root / "none.md")) == 2

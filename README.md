@@ -98,6 +98,7 @@ commits, pushes or posts anywhere.
 
 ```sh
 python tools/sitetool.py new --title "The title"      # start a draft note
+python tools/sitetool.py save --slug the-title --title "..." --description "..." --body-file body.md   # draft from a file
 python tools/sitetool.py check                        # check every note and work entry
 python tools/sitetool.py check the-title --links      # is this note ready to publish?
 python tools/sitetool.py publish the-title            # all checks, a real build, then published: true
