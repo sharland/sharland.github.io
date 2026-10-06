@@ -126,10 +126,19 @@ different branch, this layout will not deploy until it is set back to
   top of `assets/css/site.css`; adding a piece is one CSS rule plus a name in the
   list in `_includes/head.html`, and a builder in `disc.js` if it needs a new kind
   of drawing. The light ground is cream, the dark ground is near-black, following
-  the system setting.
-- **Type.** Literata, a variable font with optical sizes, self-hosted from
-  `assets/fonts/`. Monospace is the system stack and is only used for repository
-  names.
+  the system setting unless the Light/Dark switch says otherwise.
+- **Type.** Two faces, both self-hosted from `assets/fonts/`: Literata (serif,
+  variable, optical sizes) and Public Sans (sans, variable). `type_pairing` in
+  `_config.yml` decides which sets headings and which sets text: `b`, the current
+  setting, is Public Sans headings with Literata text; `a` is the reverse. Add
+  `?type=a` or `?type=b` to the address to compare them on the live site.
+  Monospace is the system stack and is only used for repository names and the
+  piece name under the disc.
+- **Switches.** Clicking the disc, or the arrows beneath it, steps through the
+  pieces; the choice lasts for the browser session and is written into the
+  address as `?disc=<name>` so a particular piece can be linked to. Light/Dark
+  overrides the system theme and is remembered in the browser. Both controls are
+  hidden when JavaScript is off. The logic is in `assets/js/controls.js`.
 - **Privacy.** The footer's claim that the page sets no cookies and loads nothing
   from third parties is true because the fonts are self-hosted and there is no
   analytics. Keep it true, or change the sentence.
