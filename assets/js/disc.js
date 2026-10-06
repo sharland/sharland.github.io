@@ -154,5 +154,13 @@
     clearTimeout(timer);
     timer = setTimeout(function () { draw(false); }, 150);
   });
+  /* The switcher (controls.js) changes data-disc on <html>; redraw when it does. */
+  if (window.MutationObserver) {
+    new MutationObserver(function (muts) {
+      for (var i = 0; i < muts.length; i++) {
+        if (muts[i].attributeName === 'data-disc') { draw(true); return; }
+      }
+    }).observe(root, { attributes: true, attributeFilter: ['data-disc'] });
+  }
   draw(true);
 })();

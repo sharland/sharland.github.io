@@ -3,6 +3,11 @@
     <canvas id="disc" role="img" aria-label="Generative drawing: a disc filled with dense coloured lines. A different piece is drawn each day."></canvas>
     <noscript><img src="{{ '/assets/img/disc-fallback.webp' | relative_url }}" width="800" height="800" alt="Generative drawing: a disc of deep red radial lines on cream."></noscript>
   </div>
+  <p class="disc-controls" hidden>
+    <button type="button" class="textbtn" id="disc-prev">Previous</button>
+    <span class="disc-name" id="disc-name" aria-live="polite"></span>
+    <button type="button" class="textbtn" id="disc-next">Next</button>
+  </p>
   <div class="side-id">
     {% if page.url == "/" %}<h1 class="name"><a href="#top">Brian Sharland</a></h1>{% else %}<p class="name"><a href="{{ '/' | relative_url }}#top">Brian Sharland</a></p>{% endif %}
     <p class="role">AI governance and information security.</p>
@@ -11,4 +16,5 @@
 {% include menu.html %}
   </nav>
   <p class="side-links">Oxfordshire. Find me on <a href="{{ site.linkedin_url }}" rel="me">LinkedIn</a> and <a href="{{ site.github_url }}" rel="me">GitHub</a>.</p>
+  <p class="side-theme"><button type="button" class="textbtn" data-theme-toggle hidden>Dark</button></p>
 </aside>

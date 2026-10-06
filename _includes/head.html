@@ -4,17 +4,30 @@
 <meta name="theme-color" content="#f4efe6" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b0c0f" media="(prefers-color-scheme: dark)">
 <script>
-/* Pick today's piece before first paint so the page accent never flashes.
-   _config.yml `disc:` pins a piece or says "daily"; ?disc=<name> previews one. */
-(function(){var p="{{ site.disc | default: 'daily' }}",L=["ribbons-lime","ribbons-magenta","ribbons-cyan","rings-orange","rings-gradient","burst-red","sheets-black","mesh-black"];
-try{var q=new URLSearchParams(location.search).get("disc");if(q&&L.indexOf(q)>-1){p=q;}}catch(e){}
-if(L.indexOf(p)<0){var d=new Date(),s=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();p=L[s%L.length];}
-document.documentElement.setAttribute("data-disc",p);})();
+/* Runs before first paint so nothing flashes.
+   theme: a stored choice from the Light/Dark switch, else the system setting.
+   type:  which face is used for headings and which for text; ?type=a|b previews.
+   disc:  the piece in the sidebar; ?disc=<name>, then this session's choice,
+          then `disc:` in _config.yml, then the date. */
+(function(){
+  var h=document.documentElement, q=null;
+  try{q=new URLSearchParams(location.search);}catch(e){}
+  try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark"){h.setAttribute("data-theme",t);}}catch(e){}
+  var ty="{{ site.type_pairing | default: 'a' }}", qt=q&&q.get("type");if(qt==="a"||qt==="b"){ty=qt;}
+  h.setAttribute("data-type",ty);
+  var L=["ribbons-lime","ribbons-magenta","ribbons-cyan","rings-orange","rings-gradient","burst-red","sheets-black","mesh-black"];
+  window.DISC_PIECES=L;
+  var p="{{ site.disc | default: 'daily' }}", qd=q&&q.get("disc");
+  if(qd&&L.indexOf(qd)>-1){p=qd;}else{try{var s=sessionStorage.getItem("disc");if(s&&L.indexOf(s)>-1){p=s;}}catch(e){}}
+  if(L.indexOf(p)<0){var d=new Date(),n=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();p=L[n%L.length];}
+  h.setAttribute("data-disc",p);
+})();
 </script>
 {% seo %}
 <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
 <link rel="icon" href="{{ '/assets/img/favicon-32.png' | relative_url }}" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="{{ '/assets/img/apple-touch-icon.png' | relative_url }}">
 <link rel="preload" href="{{ '/assets/fonts/Literata-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ '/assets/fonts/PublicSans-latin.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
 <link rel="alternate" type="application/atom+xml" href="{{ "/feed.xml" | absolute_url }}" title="{{ site.title }}: notes">

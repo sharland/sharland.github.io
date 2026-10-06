@@ -20,7 +20,7 @@ notes/index.html     list of notes at /notes/
 assets/css/site.css  all styles; colours and type live in :root
 assets/js/disc.js    the drawing in the sidebar
 assets/js/nav.js     marks the current section in the menu
-assets/fonts/        Literata (SIL Open Font License, see OFL.txt)
+assets/fonts/        Literata and Public Sans (both SIL Open Font License)
 assets/img/          og.jpg (link preview), disc-fallback.webp (no-JS), favicons
 ```
 
