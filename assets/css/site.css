@@ -207,9 +207,13 @@ code, .is-code { font-family: var(--mono); font-size: 0.875em; }
   .side-menu { margin-bottom: auto; }
   .menu { display: flex; flex-direction: column; gap: 0.6rem; }
   .menu a { font-size: 1.0625rem; position: relative; padding-left: 0; transition: padding-left 0.15s ease; }
-  .menu a[aria-current="true"] { padding-left: 2rem; }
+  .menu a[aria-current="true"] { padding-left: 1.5rem; }
+  /* The same arrow as the disc controls, drawn as a mask so it takes the accent. */
   .menu a[aria-current="true"]::before {
-    content: ""; position: absolute; left: 0; top: 0.75em; width: 1.5rem; height: 2px; background: var(--accent);
+    content: ""; position: absolute; left: 0; top: 0.32em; width: 1em; height: 1em;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
   }
   .side-links { margin-top: 1.5rem; }
   .bar { display: none; }
