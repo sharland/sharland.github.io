@@ -1,5 +1,6 @@
 ---
 title: "ISO/IEC 42001, the NIST AI RMF and the EU AI Act, side by side"
+slug: iso-42001-nist-ai-rmf-eu-ai-act
 date: 2026-10-05
 updated: 2026-10-05
 status: working draft

@@ -2,7 +2,9 @@
 
 Brian Sharland's site: a short page about his work in AI governance and
 information security, with room for the documents he publishes. It is built
-by GitHub Pages with Jekyll; nothing else runs anywhere.
+by GitHub Pages with Jekyll; nothing else runs anywhere. The scripts in
+`tools/` are for writing and checking on the author's machine and are not part
+of the published site.
 
 ## How it is put together
 
@@ -23,11 +25,19 @@ assets/js/disc.js    the drawing in the sidebar
 assets/js/nav.js     marks the current section in the menu
 assets/fonts/        Literata and Public Sans (both SIL Open Font License)
 assets/img/          og.jpg (link preview), disc-fallback.webp (no-JS), favicons
+
+Not published (listed under exclude in _config.yml):
+tools/               sitetool.py and its modules: create, check and publish notes
+tests/               pytest tests for the tools
+site.bat, serve.bat  Windows shortcuts for the tools and the local preview
+CLAUDE.md            working rules for AI-assisted sessions in this repository
 ```
 
 ## Adding a piece of work
 
-Append an entry to `_data/work.yml`:
+Add an entry to `_data/work.yml`, first in its group, since entries appear in
+file order and the newest belongs at the top. `site work add` does this and
+checks the result (see Tools below). By hand:
 
 ```yaml
 - title: ISO/IEC 42001 mapped to the NIST AI RMF and the EU AI Act
@@ -44,11 +54,13 @@ only when they have at least one entry, so an empty group costs nothing.
 
 ## Adding a note
 
-Create `_notes/YYYY-MM-slug.md`:
+`site new --title "The title"` creates the file below with today's date. By
+hand, create `_notes/YYYY-MM-slug.md`:
 
 ```yaml
 ---
 title: "The title"
+slug: the-title             # the address: /notes/the-title/. Same as the filename after YYYY-MM-
 date: 2026-10-05            # first published
 updated: 2026-10-05         # last reviewed; shown in the document-control line
 status: working draft       # free text: working draft, reviewed, final
@@ -61,15 +73,56 @@ published: false            # flip to true when it is ready
 Body in Markdown. Tables work (GFM). Headings start at `##`.
 ```
 
-The slug in the URL comes from the filename with the date prefix removed.
+The address comes from `slug:`, not from the filename. Jekyll only strips a
+filename date that includes the day, so without `slug:` a file named
+`2026-10-the-title.md` would be published at `/notes/2026-10-the-title/`. Once
+a note is published its slug should never change. An optional `sources:` list
+of public URLs records what a note draws on; it is not shown on the page.
+
 Notes with `published: false` are not built at all, so a draft can live in the
-repository without appearing anywhere. The Notes section on the front page and
+repository without appearing on the site. The repository itself is public, so
+a draft is still readable on GitHub. The Notes section on the front page and
 the `/notes/` list only show once a note is published. Published notes are also
 syndicated at `/feed.xml`.
 
 The seed note in `_notes/` was drafted offline and every reference in it is
 marked "(verify)". Its editor's checklist is in a Liquid comment at the top of
 the file and never renders.
+
+## Tools
+
+`tools/sitetool.py` creates, checks and publishes notes and work entries. It
+uses only the Python standard library. On Windows, `site.bat` runs it, so the
+commands below can be typed as `site ...` from this folder. Nothing in it
+commits, pushes or posts anywhere.
+
+```sh
+python tools/sitetool.py new --title "The title"      # start a draft note
+python tools/sitetool.py check                        # check every note and work entry
+python tools/sitetool.py check the-title --links      # is this note ready to publish?
+python tools/sitetool.py publish the-title            # all checks, a real build, then published: true
+python tools/sitetool.py work add --title "..." --kind mapping --url /notes/the-title/ --summary "..."
+python tools/sitetool.py handover the-title           # title, description and link, ready to paste
+python tools/sitetool.py live the-title               # wait for Pages, then fetch the live note
+```
+
+`check` reports errors, which block publishing, and warnings, which do not. A
+note being published must have no `(verify)` markers, `[Brian: ...]` prompts or
+editor's checklist left in it, a slug that matches its filename, sound dates, a
+quoted version, headings that start at `##`, and internal links that resolve.
+Work entries must have a known `kind` and a `url` that leads somewhere. With
+`--build` it runs a real Jekyll build and inspects the result, including that
+none of the tooling leaked into the site. What it cannot judge is left to the
+author: whether a reference says what the note claims, and when a draft has
+earned a new status.
+
+`publish` sets `published: true` and `updated`, and on first publication sets
+`date` to the day (`--keep-date` keeps the drafting date). Committing and
+pushing remain separate, deliberate steps; see Deploying.
+
+The tests need pytest (`pip install -r requirements-dev.txt`) and run with
+`python -m pytest`. One test runs a real Jekyll build; skip it with
+`-m "not slow"`.
 
 ## Previewing
 
@@ -117,6 +170,9 @@ Actions tab ("pages build and deployment"). The site itself only changes when
 `master` changes.
 
 To see unpublished notes locally, add `--unpublished` to the serve command.
+
+On Windows, `serve.bat` does the above in one step: it installs any missing
+gems, starts the server and opens the browser. `serve --unpublished` shows drafts.
 
 ## Deploying
 

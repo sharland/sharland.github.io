@@ -6,7 +6,7 @@ permalink: /notes/
 ---
 {%- assign notes = site.notes | sort: "date" | reverse %}
 <h1>Notes</h1>
-<p class="doc-control">Working documents. Each one carries its status and the date it was last reviewed.</p>
+<p class="doc-control">Working documents. Each one carries its status and the date it was last reviewed. For shorter commentary, see <a href="{{ site.linkedin_url }}">LinkedIn</a>.</p>
 {%- if notes.size > 0 %}
 <ul class="entries">
 {%- for note in notes %}

@@ -89,3 +89,11 @@ exclude:
   - .jekyll-cache
   - .bundle
   - .claude
+  # Local tooling and its documentation; none of it is part of the site.
+  - CLAUDE.md
+  - tools
+  - tests
+  - design
+  - pytest.ini
+  - requirements-dev.txt
+  - "*.bat"

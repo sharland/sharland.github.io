@@ -1,0 +1,2 @@
+# Only needed to run the tests. The tools themselves use the standard library.
+pytest>=8
