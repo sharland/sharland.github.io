@@ -2,6 +2,11 @@
 # the Gemfile pins the same versions so `bundle exec jekyll serve` is a faithful preview.
 
 title: Brian Sharland
+# The drawing in the sidebar. "daily" rotates through the pieces by date;
+# or pin one: ribbons-lime, ribbons-magenta, ribbons-cyan, rings-orange,
+# rings-gradient, burst-red, sheets-black, mesh-black. Preview any piece
+# on any day with ?disc=<name> in the address bar.
+disc: daily
 tagline: AI governance and information security
 description: >-
   Brian Sharland works in AI governance and information security. ISO/IEC 42001
@@ -55,7 +60,6 @@ defaults:
       type: notes
     values:
       layout: note
-      compact: true
       excerpt_separator: ""   # notes use `description`; no auto-excerpts
 
 plugins:
