@@ -17,6 +17,7 @@ _includes/           head, side (disc, name, menu), menu (section links,
 index.html           the front page
 notes/index.html     list of notes at /notes/
 404.html             not-found page
+favicon.ico          the disc icon at 16, 32 and 48 px, for browsers that ask for this path
 assets/css/site.css  all styles; colours and type live in :root
 assets/js/disc.js    the drawing in the sidebar
 assets/js/nav.js     marks the current section in the menu
@@ -82,6 +83,28 @@ bundle install
 bundle exec jekyll serve --livereload
 # then open http://127.0.0.1:4000/
 ```
+
+On Windows, starting with no Ruby (tested with Ruby 3.3, the version Pages
+builds with):
+
+```powershell
+# 1. Ruby with the MSYS2 development kit; a few gems compile native code.
+winget install --id RubyInstallerTeam.RubyWithDevKit.3.3 --source winget --scope user
+
+# 2. Open a new terminal so Ruby is on the PATH, then from this folder:
+bundle install
+bundle exec jekyll serve --livereload
+```
+
+The `Gemfile` carries two Windows-only gems that make this work, and neither
+is installed on any other platform. `tzinfo-data` supplies the timezone
+database Windows lacks; without it Jekyll stops with "No source of timezone
+data could be found" because `_config.yml` sets a timezone. `wdm` lets the
+server watch for file changes through the Windows API instead of polling.
+
+To keep the gems inside the project instead of the Ruby install, run
+`bundle config set --local path vendor/bundle` before `bundle install`. Both
+`vendor/` and `.bundle/` are ignored by git and by Jekyll.
 
 With Docker and no Ruby (untested here; the image installs the Gemfile on start):
 
